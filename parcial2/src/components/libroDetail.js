@@ -4,17 +4,13 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import { useState } from "react";
 import { useEffect } from "react";
-
-// Libro es un container que contiene los detalles del libro
+import { FormattedMessage } from "react-intl";
 
 function LibroDetail(props) {
     const url = "http://localhost:3000/books";
     const [libroNuevo, setLibroNuevo] = useState(props.libro);
 
     function handleInputChange(e) {
-        console.log(libroNuevo.available_online);
-        // console.log(e.target.name);
-        // e.preventDefault();
         if (e.target.name !== "available_online") {
             setLibroNuevo({
                 ...libroNuevo,
@@ -26,13 +22,10 @@ function LibroDetail(props) {
                 [e.target.name]: !libroNuevo.available_online,
             });
         }
-        console.log(libroNuevo);
     }
 
     function handleSubmit() {
-        console.log(libroNuevo);
-        const urlDetail = url;
-        fetch(urlDetail, {
+        fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -41,7 +34,6 @@ function LibroDetail(props) {
         })
             .then((res) => res.json())
             .then((res) => {
-                console.log(res);
                 if (res.statusCode < 200 || res.statusCode > 299) {
                     console.log("error");
                 } else {
@@ -51,20 +43,8 @@ function LibroDetail(props) {
     }
 
     useEffect(() => {
-        console.log("props.libro");
-        console.log(props.libro);
         setLibroNuevo(props.libro);
     }, [props.libro]);
-
-    // // useEffect(() => {
-    // //     console.log("libroAnterior");
-    // //     // console.log(libroAnterior);
-    // // }, [libroAnterior]);
-
-    // useEffect(() => {
-    //     console.log("libro");
-    //     // console.log(renderizado);
-    // }, [libro]);
 
     if (props.libro.name !== undefined) {
         if (props.isAdmin) {
@@ -79,7 +59,9 @@ function LibroDetail(props) {
                     <Row>
                         <Row>
                             <Col>
-                                <p className="text-start fw-bold">ISBN:</p>
+                                <p className="text-start fw-bold">
+                                    <FormattedMessage id="libro.isbnLabel" defaultMessage="ISBN:" />
+                                </p>
                             </Col>
                             <Col>
                                 <p className="text-start">{props.libro.isbn}</p>
@@ -87,7 +69,9 @@ function LibroDetail(props) {
                         </Row>
                         <Row>
                             <Col>
-                                <p className="text-start fw-bold">Autor:</p>
+                                <p className="text-start fw-bold">
+                                    <FormattedMessage id="libro.authorLabel" defaultMessage="Autor:" />
+                                </p>
                             </Col>
                             <Col>
                                 <p className="text-start">{props.libro.author}</p>
@@ -95,7 +79,9 @@ function LibroDetail(props) {
                         </Row>
                         <Row>
                             <Col>
-                                <p className="text-start fw-bold">Editorial:</p>
+                                <p className="text-start fw-bold">
+                                    <FormattedMessage id="libro.publisherLabel" defaultMessage="Editorial:" />
+                                </p>
                             </Col>
                             <Col>
                                 <p className="text-start">{props.libro.publisher}</p>
@@ -103,7 +89,9 @@ function LibroDetail(props) {
                         </Row>
                         <Row>
                             <Col>
-                                <p className="text-start fw-bold">Género:</p>
+                                <p className="text-start fw-bold">
+                                    <FormattedMessage id="libro.genderLabel" defaultMessage="Género:" />
+                                </p>
                             </Col>
                             <Col>
                                 <p className="text-start">{props.libro.gender}</p>
@@ -111,7 +99,9 @@ function LibroDetail(props) {
                         </Row>
                         <Row>
                             <Col>
-                                <p className="text-start fw-bold">Año:</p>
+                                <p className="text-start fw-bold">
+                                    <FormattedMessage id="libro.yearLabel" defaultMessage="Año:" />
+                                </p>
                             </Col>
                             <Col>
                                 <p className="text-start">{props.libro.year}</p>
@@ -119,29 +109,40 @@ function LibroDetail(props) {
                         </Row>
                         <Row>
                             <Col>
-                                <p className="text-start fw-bold">Disponible Online:</p>
+                                <p className="text-start fw-bold">
+                                    <FormattedMessage id="libro.availableOnlineLabel" defaultMessage="Disponible Online:" />
+                                </p>
                             </Col>
                             <Col>
-                                <p className="text-start">{props.libro.availableOnline ? "Sí" : "No"}</p>
+                                <p className="text-start">
+                                    {props.libro.availableOnline ? (
+                                        <FormattedMessage id="libro.yes" defaultMessage="Sí" />
+                                    ) : (
+                                        <FormattedMessage id="libro.no" defaultMessage="No" />
+                                    )}
+                                </p>
                             </Col>
                         </Row>
                         <Row>
                             <Col>
-                                <p className="text-start fw-bold">Precio:</p>
+                                <p className="text-start fw-bold">
+                                    <FormattedMessage id="libro.priceLabel" defaultMessage="Precio:" />
+                                </p>
                             </Col>
                             <Col>
                                 <p className="text-start">{props.libro.price}</p>
                             </Col>
                         </Row>
                         <Row>
-                            <p className="text-start fw-bold">Resumen:</p>
+                            <p className="text-start fw-bold">
+                                <FormattedMessage id="libro.summaryLabel" defaultMessage="Resumen:" />
+                            </p>
                             <p className="text-start">{props.libro.summary}</p>
                         </Row>
                     </Row>
                 </Container>
             );
         } else {
-            // para los admins se cambian los <p> por <input> para poder editar los campos
             return (
                 <Container className="justify-items-start">
                     <Row>
@@ -160,7 +161,9 @@ function LibroDetail(props) {
                     <Row>
                         <Row>
                             <Col>
-                                <p className="text-start fw-bold">ISBN:</p>
+                                <p className="text-start fw-bold">
+                                    <FormattedMessage id="libro.isbnLabel" defaultMessage="ISBN:" />
+                                </p>
                             </Col>
                             <Col>
                                 <input
@@ -175,7 +178,9 @@ function LibroDetail(props) {
                         </Row>
                         <Row>
                             <Col>
-                                <p className="text-start fw-bold">Autor:</p>
+                                <p className="text-start fw-bold">
+                                    <FormattedMessage id="libro.authorLabel" defaultMessage="Autor:" />
+                                </p>
                             </Col>
                             <Col>
                                 <input
@@ -190,7 +195,9 @@ function LibroDetail(props) {
                         </Row>
                         <Row>
                             <Col>
-                                <p className="text-start fw-bold">Editorial:</p>
+                                <p className="text-start fw-bold">
+                                    <FormattedMessage id="libro.publisherLabel" defaultMessage="Editorial:" />
+                                </p>
                             </Col>
                             <Col>
                                 <input
@@ -205,7 +212,9 @@ function LibroDetail(props) {
                         </Row>
                         <Row>
                             <Col>
-                                <p className="text-start fw-bold">Género:</p>
+                                <p className="text-start fw-bold">
+                                    <FormattedMessage id="libro.genderLabel" defaultMessage="Género:" />
+                                </p>
                             </Col>
                             <Col>
                                 <input
@@ -220,7 +229,9 @@ function LibroDetail(props) {
                         </Row>
                         <Row>
                             <Col>
-                                <p className="text-start fw-bold">Año:</p>
+                                <p className="text-start fw-bold">
+                                    <FormattedMessage id="libro.yearLabel" defaultMessage="Año:" />
+                                </p>
                             </Col>
                             <Col>
                                 <input
@@ -235,7 +246,9 @@ function LibroDetail(props) {
                         </Row>
                         <Row>
                             <Col>
-                                <p className="text-start fw-bold">Disponible Online:</p>
+                                <p className="text-start fw-bold">
+                                    <FormattedMessage id="libro.availableOnlineLabel" defaultMessage="Disponible Online:" />
+                                </p>
                             </Col>
                             <Col className="text-start">
                                 <input
@@ -250,7 +263,9 @@ function LibroDetail(props) {
                         </Row>
                         <Row>
                             <Col>
-                                <p className="text-start fw-bold">Precio:</p>
+                                <p className="text-start fw-bold">
+                                    <FormattedMessage id="libro.priceLabel" defaultMessage="Precio:" />
+                                </p>
                             </Col>
                             <Col>
                                 <input
@@ -264,7 +279,9 @@ function LibroDetail(props) {
                             </Col>
                         </Row>
                         <Row>
-                            <p className="text-start fw-bold">Resumen:</p>
+                            <p className="text-start fw-bold">
+                                <FormattedMessage id="libro.summaryLabel" defaultMessage="Resumen:" />
+                            </p>
                             <textarea
                                 className="form-control"
                                 wrap="soft"
@@ -277,7 +294,7 @@ function LibroDetail(props) {
                         </Row>
                         <Row className="justify-content-end mt-3">
                             <Button variant="secondary" className="p-2" onClick={handleSubmit}>
-                                Modificar
+                                <FormattedMessage id="libro.modifyButton" defaultMessage="Modificar" />
                             </Button>
                         </Row>
                     </Row>
@@ -289,7 +306,9 @@ function LibroDetail(props) {
             <Container>
                 <Row>
                     <Col>
-                        <h1>Libro no Seleccionado</h1>
+                        <h1>
+                            <FormattedMessage id="libro.notSelected" defaultMessage="Libro no Seleccionado" />
+                        </h1>
                     </Col>
                 </Row>
             </Container>

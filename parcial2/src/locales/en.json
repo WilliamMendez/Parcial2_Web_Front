@@ -1,7 +1,22 @@
 {
-    "Tu Libreria Aliada": "Your Partner Library",
-    "Contraseña": "Password",
-    "Usuario o correo": "User or email",
-    "Entrar": "Enter"
+    "login.intro": "Find even the book you weren't looking for",
+    "login.title": "Your Partner Bookstore",
+    "login.usernameLabel": "Username or email",
+    "login.passwordLabel": "Password",
+    "login.loginButton": "Login",
 
+    "libro.titleLabel": "Book Details",
+    "libro.nameLabel": "Name:",
+    "libro.isbnLabel": "ISBN:",
+    "libro.authorLabel": "Author:",
+    "libro.publisherLabel": "Publisher:",
+    "libro.genderLabel": "Genre:",
+    "libro.yearLabel": "Year:",
+    "libro.availableOnlineLabel": "Available Online:",
+    "libro.priceLabel": "Price:",
+    "libro.summaryLabel": "Summary:",
+    "libro.yes": "Yes",
+    "libro.no": "No",
+    "libro.modifyButton": "Modify",
+    "libro.notSelected": "Book Not Selected"
 }

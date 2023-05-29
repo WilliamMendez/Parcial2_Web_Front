@@ -1,1 +1,22 @@
-{}
+{
+    "login.intro": "Encuentra hasta el libro que no estabas buscando",
+    "login.title": "Tu Libreria Aliada",
+    "login.usernameLabel": "Usuario o correo",
+    "login.passwordLabel": "Contraseña",
+    "login.loginButton": "Entrar",
+
+    "libro.titleLabel": "Detalles del Libro",
+    "libro.nameLabel": "Nombre:",
+    "libro.isbnLabel": "ISBN:",
+    "libro.authorLabel": "Autor:",
+    "libro.publisherLabel": "Editorial:",
+    "libro.genderLabel": "Género:",
+    "libro.yearLabel": "Año:",
+    "libro.availableOnlineLabel": "Disponible Online:",
+    "libro.priceLabel": "Precio:",
+    "libro.summaryLabel": "Resumen:",
+    "libro.yes": "Sí",
+    "libro.no": "No",
+    "libro.modifyButton": "Modificar",
+    "libro.notSelected": "Libro no Seleccionado"
+}

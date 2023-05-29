@@ -9,19 +9,11 @@ import Image from "react-bootstrap/Image";
 import books from "../books.png";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
-// Login es un fondo gris con una tarjeta en frente con dos columnas, una con una imagen y un texto sobre fondo gris
-//  y una con un título, el formulario de ingreso y el botón de
-// entrar
+import { FormattedMessage } from "react-intl";
 
 function Login({ setIsAdmin, setIsLogged }) {
-    // console.log(setIsAdmin);
     const navigate = useNavigate();
     const url = "http://localhost:3000/login";
-    //  el login es un post a la url http://localhost:3000/login con el email y la contraseña y retorna errores o el tipo de usuario
-    //  se ejecuta cuando el usuario hace click en el botón de entrar
-    //  Ejemplo: {"email": "parcial2@hotmail.com","password": "123456"}
-    //  Ejemplo de respuesta: {"tipo": "admin"}
 
     const [user, setUser] = useState({
         email: "",
@@ -32,7 +24,6 @@ function Login({ setIsAdmin, setIsLogged }) {
 
     function tryLogin() {
         const bodystr = JSON.stringify(user);
-        console.log(user);
         fetch(url, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -40,7 +31,6 @@ function Login({ setIsAdmin, setIsLogged }) {
         })
             .then((res) => res.json())
             .then((res) => {
-                console.log(res);
                 if (res.statusCode < 200 || res.statusCode > 299) {
                     setError(res.message);
                 } else {
@@ -58,13 +48,11 @@ function Login({ setIsAdmin, setIsLogged }) {
                 }
             })
             .catch((err) => {
-                console.log(err);
                 setError(err.message);
             });
     }
 
     const showErrors = () => {
-        // console.log(error);
         return error;
     };
 
@@ -75,31 +63,36 @@ function Login({ setIsAdmin, setIsLogged }) {
                     <Col className="d-flex justify-content-center align-items-center bg-teal rounded-3">
                         <Row>
                             <Image src={books} fluid />
-                            <h3 className="text-center p-2">Encuentra hasta el libro que no estabas buscando</h3>
+                            <h3 className="text-center p-2">
+                                <FormattedMessage id="login.intro" defaultMessage="Encuentra hasta el libro que no estabas buscando" />
+                            </h3>
                         </Row>
                     </Col>
                     <Col className="d-flex flex-column">
-                        <h1 className="text-center p-5">Tu Libreria Aliada</h1>
+                        <h1 className="text-center p-5">
+                            <FormattedMessage id="login.title" defaultMessage="Tu Libreria Aliada" />
+                        </h1>
                         <Form className="align-self-center align-content-start justify-content-start">
                             <Container className="d-flex flex-column justify-content-start">
                                 <Form.Group className="mb-3 justify-content-start align-self-start" controlId="formBasicEmail">
-                                    <Form.Label className="text-start">Usuario o correo</Form.Label>
+                                    <Form.Label className="text-start">
+                                        <FormattedMessage id="login.usernameLabel" defaultMessage="Usuario o correo" />
+                                    </Form.Label>
                                     <Form.Control type="email" onChange={(e) => setUser({ ...user, email: e.target.value })} />
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="formBasicPassword">
-                                    <Form.Label className="text-start">Contraseña</Form.Label>
+                                    <Form.Label className="text-start">
+                                        <FormattedMessage id="login.passwordLabel" defaultMessage="Contraseña" />
+                                    </Form.Label>
                                     <Form.Control type="password" onChange={(e) => setUser({ ...user, password: e.target.value })} />
                                 </Form.Group>
                             </Container>
                         </Form>
-
-                        {/* texto de error */}
                         <p className="text-danger" id="error">
                             {showErrors()}
                         </p>
-
                         <Button variant="secondary" type="button" onClick={tryLogin} className="mb-3">
-                            Entrar
+                            <FormattedMessage id="login.loginButton" defaultMessage="Entrar" />
                         </Button>
                     </Col>
                 </Row>
