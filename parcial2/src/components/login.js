@@ -5,19 +5,23 @@ import { useState } from "react";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/esm/Col";
 import Row from "react-bootstrap/esm/Row";
+import Image from "react-bootstrap/Image";
 import books from "../books.png";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Login es un fondo gris con una tarjeta en frente con dos columnas, una con una imagen y un texto sobre fondo gris
 //  y una con un título, el formulario de ingreso y el botón de
 // entrar
 
-function Login() {
+function Login({ setIsAdmin, setIsLogged }) {
+    // console.log(setIsAdmin);
+    const navigate = useNavigate();
     const url = "http://localhost:3000/login";
-//  el login es un post a la url http://localhost:3000/login con el email y la contraseña y retorna errores o el tipo de usuario
-//  se ejecuta cuando el usuario hace click en el botón de entrar
-//  Ejemplo: {"email": "parcial2@hotmail.com","password": "123456"}
-//  Ejemplo de respuesta: {"tipo": "admin"}
+    //  el login es un post a la url http://localhost:3000/login con el email y la contraseña y retorna errores o el tipo de usuario
+    //  se ejecuta cuando el usuario hace click en el botón de entrar
+    //  Ejemplo: {"email": "parcial2@hotmail.com","password": "123456"}
+    //  Ejemplo de respuesta: {"tipo": "admin"}
 
     const [user, setUser] = useState({
         email: "",
@@ -26,30 +30,31 @@ function Login() {
 
     const [error, setError] = useState("");
 
-    const [tipo, setTipo] = useState("");
-
-    const [isLogged, setIsLogged] = useState(false);
-
     function tryLogin() {
-        const body = { email: user.email, password: user.password };
-        console.log(body);
+        const bodystr = JSON.stringify(user);
+        console.log(user);
         fetch(url, {
             method: "POST",
-            body: JSON.stringify(body)
+            headers: { "Content-Type": "application/json" },
+            body: bodystr,
         })
-
             .then((res) => res.json())
             .then((res) => {
                 console.log(res);
-                if (res.tipo === "admin") {
-                    setTipo("admin");
-                    setIsLogged(true);
-                    setError("");
-                } else
-                {
-                    setTipo("user");
-                    setIsLogged(true);
-                    setError("");
+                if (res.statusCode < 200 || res.statusCode > 299) {
+                    setError(res.message);
+                } else {
+                    if (res.rol === "Administrador") {
+                        setIsAdmin(true);
+                        setIsLogged(true);
+                        setError("");
+                        navigate("/Libros");
+                    } else {
+                        setIsAdmin(false);
+                        setIsLogged(true);
+                        setError("");
+                        navigate("/Libros");
+                    }
                 }
             })
             .catch((err) => {
@@ -59,55 +64,46 @@ function Login() {
     }
 
     const showErrors = () => {
-        if (error !== "") {
-            return error;
-        } else {
-            return "";
-        }
+        // console.log(error);
+        return error;
     };
 
     return (
-        <Container fluid className="bg-light">
-            <Row className="justify-content-center align-items-center vh-100">
-                <Col xs={12} md={6} lg={4}>
-                    <Card className="shadow">
-                        <Card.Body>
-                            <Row className="justify-content-center">
-                                <Col xs={12} className="text-center">
-                                    <img src={books} alt="books" className="img-fluid" />
-                                    <h1 className="text-primary">Iniciar sesión</h1>
-                                </Col>
-                                <Col xs={12}>
-                                    <Form>
-                                        <Form.Group controlId="formBasicEmail">
-                                            <Form.Label>Correo electrónico</Form.Label>
-                                            <Form.Control type="email" placeholder="Ingresa tu correo electrónico" onChange={(e) => setUser({ ...user, email: e.target.value })} />
-                                        </Form.Group>
-                                    </Form>
-                                </Col>
-                                <Col xs={12}>
-                                    <Form>
-                                        <Form.Group controlId="formBasicPassword">
-                                            <Form.Label>Contraseña</Form.Label>
-                                            <Form.Control type="password" placeholder="Ingresa tu contraseña" onChange={(e) => setUser({ ...user, password: e.target.value })} />
-                                        </Form.Group>
-                                    </Form>
-                                </Col>
-{/* mensaje de error que se recibe del back y se hace visible si existe */}
-                                <Col xs={12} className="text-center">
-                                    <p className="text-danger" id="error">{showErrors()}</p>
-                                </Col>
+        <Container fluid className="bg-secondary bg-gradient min-vh-100 d-flex flex-column justify-content-center">
+            <Container className="bg-light bg-gradient rounded-3">
+                <Row>
+                    <Col className="d-flex justify-content-center align-items-center bg-teal rounded-3">
+                        <Row>
+                            <Image src={books} fluid />
+                            <h3 className="text-center p-2">Encuentra hasta el libro que no estabas buscando</h3>
+                        </Row>
+                    </Col>
+                    <Col className="d-flex flex-column">
+                        <h1 className="text-center p-5">Tu Libreria Aliada</h1>
+                        <Form className="align-self-center align-content-start justify-content-start">
+                            <Container className="d-flex flex-column justify-content-start">
+                                <Form.Group className="mb-3 justify-content-start align-self-start" controlId="formBasicEmail">
+                                    <Form.Label className="text-start">Usuario o correo</Form.Label>
+                                    <Form.Control type="email" onChange={(e) => setUser({ ...user, email: e.target.value })} />
+                                </Form.Group>
+                                <Form.Group className="mb-3" controlId="formBasicPassword">
+                                    <Form.Label className="text-start">Contraseña</Form.Label>
+                                    <Form.Control type="password" onChange={(e) => setUser({ ...user, password: e.target.value })} />
+                                </Form.Group>
+                            </Container>
+                        </Form>
 
-                                <Col xs={12} className="text-center">
-                                    <Button variant="primary" type="submit" className="w-100" onClick={tryLogin}>
-                                        Entrar
-                                    </Button>
-                                </Col>
-                            </Row>
-                        </Card.Body>
-                    </Card>
-                </Col>
-            </Row>
+                        {/* texto de error */}
+                        <p className="text-danger" id="error">
+                            {showErrors()}
+                        </p>
+
+                        <Button variant="secondary" type="button" onClick={tryLogin} className="mb-3">
+                            Entrar
+                        </Button>
+                    </Col>
+                </Row>
+            </Container>
         </Container>
     );
 }
